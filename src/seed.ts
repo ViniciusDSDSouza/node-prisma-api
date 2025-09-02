@@ -3,16 +3,14 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.user.createMany({
-    data: [
-      { name: "Vinicius", email: "vinicius@example.com" },
-      { name: "Maria", email: "maria@example.com" },
-    ],
+  await prisma.user.upsert({
+    where: { email: "vinicius@example.com" },
+    update: {},
+    create: { name: "Vinicius", email: "vinicius@example.com" },
   });
-
-  console.log("Seed finalizado!");
+  console.log("Seed finished!");
 }
 
 main()
-  .catch((e) => console.error(e))
+  .catch(console.error)
   .finally(() => prisma.$disconnect());
